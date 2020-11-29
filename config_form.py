@@ -12,7 +12,7 @@ class ConfigForm():
         self.usuario = usuario
         self.senha = senha
         self.config = {
-            'user': self.usuario,
+            'user': self.usuario,   
             'password': self.senha,
             'host': '127.0.0.1',
             'database': 'world'
