@@ -268,3 +268,18 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
+
+
+
+
+'''if jogada_player == jogada_computador:
+    print('ISSO FOI UM EMPATE')
+elif jogada_player == 'Tesoura' and jogada_computador == "Pedra":
+    print('Voce perdeu')
+elif jogada_player == 'Pedra' and jogada_computador == "Papel":
+    print('Voce perdeu')
+elif jogada_player == 'Papel' and jogada_computador == "Tesoura"
+    print('Voce perdeu')
+else:
+    print('VOCE GANHOU')'''
