@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 
+config_variable = None
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -254,6 +255,24 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def goForm(self):
+        global config_variable
+        try:
+            self.config = ConfigForm().get_login(self.usuario_input.text(), self.senha_input.text())
+            config_variable = self.config
+
+            self.Form = QtWidgets.QWidget()
+            self.ui = Ui_Form()
+            self.ui.setupUi(self.Form)
+            MainWindow.close()
+            self.Form.show()
+        except:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText('Usuário ou senha incorretos   ')
+            msg.setWindowTitle("Erro!")
+            msg.exec_()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
