@@ -9,6 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from config_form import ConfigForm
+from PyQt5.QtWidgets import *
+from PyQt5 import QtCore
+from PyQt5 import QtGui
 
 
 class Ui_MainWindow(object):
@@ -166,41 +170,41 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(110, 90, 330, 55))
+        self.usuario_input = QtWidgets.QLineEdit(self.centralwidget)
+        self.usuario_input.setGeometry(QtCore.QRect(110, 90, 330, 55))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(14)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setAutoFillBackground(False)
-        self.lineEdit.setStyleSheet("border-radius:6 px;\n"
+        self.usuario_input.setFont(font)
+        self.usuario_input.setAutoFillBackground(False)
+        self.usuario_input.setStyleSheet("border-radius:6 px;\n"
 "background-color: #e4eaeb;\n"
 "padding: 4px;\n"
 "\n"
 "")
-        self.lineEdit.setObjectName("lineEdit")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(190, 40, 151, 20))
+        self.usuario_input.setObjectName("usuario_input")
+        self.titulo = QtWidgets.QLabel(self.centralwidget)
+        self.titulo.setGeometry(QtCore.QRect(190, 40, 151, 20))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(15)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(110, 160, 330, 55))
+        self.titulo.setFont(font)
+        self.titulo.setObjectName("titulo")
+        self.senha_input = QtWidgets.QLineEdit(self.centralwidget)
+        self.senha_input.setGeometry(QtCore.QRect(110, 160, 330, 55))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(14)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setStyleSheet("border-radius:6 px;\n"
+        self.senha_input.setFont(font)
+        self.senha_input.setStyleSheet("border-radius:6 px;\n"
 "background-color: #e4eaeb;\n"
 "padding: 4px;\n"
 "\n"
 "")
-        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(190, 240, 170, 50))
+        self.senha_input.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.senha_input.setObjectName("senha_input")
+        self.entrar_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.entrar_btn.setGeometry(QtCore.QRect(190, 240, 170, 50))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(12, 221, 245))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -229,16 +233,16 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(12, 221, 245))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-        self.pushButton.setPalette(palette)
+        self.entrar_btn.setPalette(palette)
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-color:#0cddf5;\n"
+        self.entrar_btn.setFont(font)
+        self.entrar_btn.setStyleSheet("background-color:#0cddf5;\n"
 "border-width: 2px;\n"
 "border-radius: 15px;\n"
 "padding: 4px;;")
-        self.pushButton.setCheckable(False)
-        self.pushButton.setObjectName("pushButton")
+        self.entrar_btn.setCheckable(False)
+        self.entrar_btn.setObjectName("entrar_btn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 550, 25))
@@ -254,10 +258,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.lineEdit.setPlaceholderText(_translate("MainWindow", "Usuário *"))
-        self.label.setText(_translate("MainWindow", "Iniciar sessão"))
-        self.lineEdit_2.setPlaceholderText(_translate("MainWindow", "Senha *"))
-        self.pushButton.setText(_translate("MainWindow", "Entrar"))
+        self.usuario_input.setPlaceholderText(_translate("MainWindow", "Usuário *"))
+        self.titulo.setText(_translate("MainWindow", "Iniciar sessão"))
+        self.senha_input.setPlaceholderText(_translate("MainWindow", "Senha *"))
+        self.entrar_btn.setText(_translate("MainWindow", "Entrar"))
 
 
 if __name__ == "__main__":
@@ -268,18 +272,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
-
-
-
-
-'''if jogada_player == jogada_computador:
-    print('ISSO FOI UM EMPATE')
-elif jogada_player == 'Tesoura' and jogada_computador == "Pedra":
-    print('Voce perdeu')
-elif jogada_player == 'Pedra' and jogada_computador == "Papel":
-    print('Voce perdeu')
-elif jogada_player == 'Papel' and jogada_computador == "Tesoura"
-    print('Voce perdeu')
-else:
-    print('VOCE GANHOU')'''

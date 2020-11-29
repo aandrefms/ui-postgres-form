@@ -471,7 +471,7 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="usuario_input">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -500,7 +500,7 @@ padding: 4px;
      <string>Usuário *</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="titulo">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -519,7 +519,7 @@ padding: 4px;
      <string>Iniciar sessão</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="senha_input">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -548,7 +548,7 @@ padding: 4px;
      <string>Senha *</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="entrar_btn">
     <property name="geometry">
      <rect>
       <x>190</x>
