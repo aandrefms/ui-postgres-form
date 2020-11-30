@@ -14,8 +14,8 @@ class ConfigForm():
         self.config = {
             'user': self.usuario,
             'password': self.senha,
-            'host': '127.0.0.1',
-            'database': 'world',
+            'host': '127.0.0.2',
+            'database': 'mydb',
             'auth_plugin': 'mysql_native_password'
         }
         self.cnx = mysql.connector.connect(**self.config)
@@ -27,7 +27,7 @@ class ConfigForm():
 
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
-        query = (f'SELECT * FROM city WHERE CountryCode = "{nome}" ORDER BY "Name"')
+        query = (f'SELECT * FROM clientes WHERE c_nomclien = "{nome}" ORDER BY "Name"')
 
 
         self.cursor.execute(query)
