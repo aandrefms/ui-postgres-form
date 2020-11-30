@@ -15,14 +15,15 @@ class ConfigForm():
             'user': self.usuario,
             'password': self.senha,
             'host': '127.0.0.1',
-            'database': 'world'
+            'database': 'world',
+            'auth_plugin': 'mysql_native_password'
         }
         self.cnx = mysql.connector.connect(**self.config)
         self.cursor = self.cnx.cursor()
         return self.config
 
 
-    def get_results(self, nome, config):
+    def get_results(self, nome=False, matri=False, time=False, situacao=False, config=False):
 
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
