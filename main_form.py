@@ -13,7 +13,11 @@ from config_form import ConfigForm
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5 import QtGui
+
 config_variable = None
+segunda_pag = None
+procurar_pag = None
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -259,15 +263,19 @@ class Ui_MainWindow(object):
 
     def goForm(self):
         global config_variable
+        global segunda_pag
         try:
             self.config = ConfigForm().get_login(self.usuario_input.text(), self.senha_input.text())
             config_variable = self.config
 
             self.Form = QtWidgets.QWidget()
-            self.ui = Ui_FormProcurar()
+            self.ui = Ui_Form2page()
             self.ui.setupUi(self.Form)
+            segunda_pag = self.Form
             MainWindow.close()
             self.Form.show()
+
+
         except:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -287,6 +295,7 @@ class Ui_MainWindow(object):
 class Ui_FormProcurar(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
+        Form.setWindowModality(QtCore.Qt.NonModal)
         Form.resize(644, 800)
         Form.setMinimumSize(QtCore.QSize(644, 800))
         Form.setMaximumSize(QtCore.QSize(644, 800))
@@ -436,6 +445,7 @@ class Ui_FormProcurar(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
         Form.setPalette(palette)
+        Form.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
         self.nome_input = QtWidgets.QLineEdit(Form)
         self.nome_input.setGeometry(QtCore.QRect(62, 100, 520, 65))
         font = QtGui.QFont()
@@ -488,7 +498,7 @@ class Ui_FormProcurar(object):
         self.text_browser.setGeometry(QtCore.QRect(70, 575, 511, 171))
         font = QtGui.QFont()
         font.setFamily("Georgia")
-        font.setPointSize(18)
+        font.setPointSize(15)
         self.text_browser.setFont(font)
         self.text_browser.setStyleSheet("border-radius:6 px;\n"
                                         "background-color: #e4eaeb;\n"
@@ -496,7 +506,7 @@ class Ui_FormProcurar(object):
                                         "")
         self.text_browser.setObjectName("text_browser")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(230, 30, 231, 51))
+        self.label.setGeometry(QtCore.QRect(236, 30, 172, 51))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(20)
@@ -513,11 +523,54 @@ class Ui_FormProcurar(object):
                                         "border-radius: 15px;\n"
                                         "padding: 4px;;")
         self.procurar_btn.setObjectName("procurar_btn")
+        self.back_btn = QtWidgets.QPushButton(Form)
+        self.back_btn.setGeometry(QtCore.QRect(20, 20, 91, 61))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
+        self.back_btn.setPalette(palette)
+        self.back_btn.setStyleSheet("background-color:#ffffff;\n"
+                                    "border-width: 2px;\n"
+                                    "border-radius: 15px;\n"
+                                    "padding: 4px;;")
+        self.back_btn.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("./imgs/back-arrow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.back_btn.setIcon(icon)
+        self.back_btn.setIconSize(QtCore.QSize(70, 70))
+        self.back_btn.setObjectName("back_btn")
 
         self.retranslateUi(Form)
+
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         self.procurar_btn.clicked.connect(self.procurar)
+        self.back_btn.clicked.connect(self.goBack)
 
     def procurar(self):
         global config_variable
@@ -526,6 +579,17 @@ class Ui_FormProcurar(object):
                                            config=config_variable)
         for item in results:
             self.text_browser.append(str(item))
+
+    def goBack(self):
+        global procurar_pag
+        global segunda_pag
+
+        self.Form = QtWidgets.QWidget()
+        self.ui = Ui_Form2page()
+        self.ui.setupUi(self.Form)
+        segunda_pag = self.Form
+        procurar_pag.close()
+        self.Form.show()
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -715,6 +779,21 @@ class Ui_Form2page(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        self.procurar2_btn.clicked.connect(self.goProcurar)
+
+    def goProcurar(self):
+        global procurar_pag
+        global segunda_pag
+
+        self.Form1 = QtWidgets.QWidget()
+        self.ui1 = Ui_FormProcurar()
+        self.ui1.setupUi(self.Form1)
+        procurar_pag = self.Form1
+        segunda_pag.close()
+        self.Form1.show()
+
+    def goInserir(self):
+        pass
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
