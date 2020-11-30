@@ -2,7 +2,13 @@ import datetime
 import mysql.connector
 import tkinter as tk
 
-
+config = {
+            'user': 'convidado',
+            'password': 'manchester00',
+            'host': '127.0.0.2',
+            'database': 'mydb',
+            'auth_plugin': 'mysql_native_password'
+        }
 
 class ConfigForm():
     def __init__(self):
@@ -27,6 +33,7 @@ class ConfigForm():
 
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
+
         query = (f'SELECT * FROM clientes WHERE c_nomclien = "{nome}" ORDER BY "Name"')
 
 
@@ -35,10 +42,21 @@ class ConfigForm():
         for row in self.cursor:
             lista.append(row)
         self.cursor.close()
-        self.cnx.close()    
+        self.cnx.close()
         return lista
 
-'''
-INSERT INTO clientes (c_matclien, c_nomclien, c_cpfcllien, c_sexclien, c_endclien, c_sitclien)
-VALUES ('01530', 'Joaozinho', '321-231-432-69', 'Masculino', 'Av lalalal', 'Ativo')
-'''
+
+    def inserir(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_endclien=''
+                ,c_sitclien=''):
+        self.cnx = mysql.connector.connect(**config)
+        self.cursor = self.cnx.cursor()
+        query = (f'INSERT INTO clientes (c_matclien, c_nomclien, c_cpfclien,c_sexclien, c_endclien, c_sitclien) VALUES'
+                 f'("{c_matclien}", "{c_nomclien}", "{c_cpfclien}", "{c_sexclien}", "{c_endclien}", "{c_sitclien}")')
+
+        self.cursor.execute(query)
+        self.cnx.commit()
+
+
+
+a = ConfigForm()
+a.inserir('01534', 'Carlinhos', '762-241-426-69', 'Masculino')
