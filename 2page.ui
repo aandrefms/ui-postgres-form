@@ -2,27 +2,24 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>644</width>
-    <height>800</height>
+    <width>550</width>
+    <height>335</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>644</width>
-    <height>800</height>
+    <width>550</width>
+    <height>335</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>644</width>
-    <height>800</height>
+    <width>550</width>
+    <height>335</height>
    </size>
   </property>
   <property name="palette">
@@ -468,163 +465,15 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>Formulário</string>
+   <string>Form</string>
   </property>
-  <property name="locale">
-   <locale language="Portuguese" country="Brazil"/>
-  </property>
-  <widget class="QLineEdit" name="nome_input">
+  <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>62</x>
-     <y>100</y>
-     <width>520</width>
-     <height>65</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Georgia</family>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:6 px;
-background-color: #e4eaeb;
-padding: 4px;
-
-</string>
-   </property>
-   <property name="placeholderText">
-    <string>Nome</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="matricula_input">
-   <property name="geometry">
-    <rect>
-     <x>62</x>
-     <y>200</y>
-     <width>520</width>
-     <height>65</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Georgia</family>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:6 px;
-background-color: #e4eaeb;
-padding: 4px;
-
-</string>
-   </property>
-   <property name="placeholderText">
-    <string>Matrícula</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="time_input">
-   <property name="geometry">
-    <rect>
-     <x>62</x>
-     <y>300</y>
-     <width>520</width>
-     <height>65</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Georgia</family>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:6 px;
-background-color: #e4eaeb;
-padding: 4px;
-
-</string>
-   </property>
-   <property name="placeholderText">
-    <string>Time</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="situacao_input">
-   <property name="geometry">
-    <rect>
-     <x>62</x>
-     <y>400</y>
-     <width>520</width>
-     <height>65</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Georgia</family>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:6 px;
-background-color: #e4eaeb;
-padding: 4px;
-
-</string>
-   </property>
-   <property name="placeholderText">
-    <string>Situação</string>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="text_browser">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>575</y>
-     <width>511</width>
-     <height>171</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Georgia</family>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:6 px;
-background-color: #e4eaeb;
-padding: 4px;
-</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>236</x>
-     <y>30</y>
-     <width>172</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Georgia</family>
-     <pointsize>20</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Formulário</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="procurar_btn">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>490</y>
-     <width>171</width>
-     <height>51</height>
+     <x>155</x>
+     <y>70</y>
+     <width>240</width>
+     <height>81</height>
     </rect>
    </property>
    <property name="font">
@@ -640,127 +489,32 @@ border-radius: 15px;
 padding: 4px;;</string>
    </property>
    <property name="text">
-    <string>Procurar</string>
+    <string>Procurar </string>
    </property>
   </widget>
-  <widget class="QPushButton" name="back_btn">
+  <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>91</width>
-     <height>61</height>
+     <x>155</x>
+     <y>195</y>
+     <width>240</width>
+     <height>81</height>
     </rect>
    </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="Button">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="Button">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled>
-      <colorrole role="Button">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </disabled>
-    </palette>
+   <property name="font">
+    <font>
+     <family>Georgia</family>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:#ffffff;
+    <string notr="true">background-color:#0cddf5;
 border-width: 2px;
 border-radius: 15px;
 padding: 4px;;</string>
    </property>
    <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>../../../Downloads/back-arrow.png</normaloff>../../../Downloads/back-arrow.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>70</width>
-     <height>70</height>
-    </size>
+    <string>Inserir dados</string>
    </property>
   </widget>
  </widget>

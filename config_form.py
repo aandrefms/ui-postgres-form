@@ -35,5 +35,10 @@ class ConfigForm():
         for row in self.cursor:
             lista.append(row)
         self.cursor.close()
-        self.cnx.close()
+        self.cnx.close()    
         return lista
+
+'''
+INSERT INTO clientes (c_matclien, c_nomclien, c_cpfcllien, c_sexclien, c_endclien, c_sitclien)
+VALUES ('01530', 'Joaozinho', '321-231-432-69', 'Masculino', 'Av lalalal', 'Ativo')
+'''
