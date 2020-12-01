@@ -281,7 +281,7 @@ class Ui_FormProcurar(object):
         segunda_pag = self.Form
         self.Form.show()
 
-
+        self.text_browser.clear()
         for item in results:
             self.text_browser.append(f'{item[1]}')
 
@@ -361,10 +361,6 @@ class Ui_MostrarResultados(object):
             label1 = QtWidgets.QLabel(sexo, self.Form)
             label1.setFont(font)
             gridLayout.addWidget(label1, i_control, 3)
-
-
-
-
 
             i_control +=1
 
@@ -478,7 +474,7 @@ class Ui_Cadastro(object):
         self.situacao_comboBox.addItem("Ativo")
         self.situacao_comboBox.addItem("Inativo")
 
-        self.cadastrar_btn = QtWidgets.QPushButton(Cadastro)
+        self.cadastrar_btn = QtWidgets.QPushButton("Cadastrar", Cadastro)
         self.cadastrar_btn.setGeometry(QtCore.QRect(410, 700, 171, 51))
         font = QtGui.QFont()
         font.setFamily("Georgia")
@@ -490,7 +486,7 @@ class Ui_Cadastro(object):
                                          "padding: 4px;;")
         self.cadastrar_btn.setObjectName("cadastrar_btn")
 
-        self.back_btn = QtWidgets.QPushButton("Cadastrar", Cadastro)
+        self.back_btn = QtWidgets.QPushButton(Cadastro)
         self.back_btn.setGeometry(QtCore.QRect(20, 20, 91, 61))
         self.back_btn.setStyleSheet("background-color:#ffffff;\n"
                                     "border-width: 2px;\n"

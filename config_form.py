@@ -28,10 +28,10 @@ class ConfigForm():
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
 
-        if situacao != False:
+        if situacao != "":
             query = (f'SELECT * FROM clientes WHERE c_sitclien = "{situacao}" ORDER BY "Name"')
         else:
-            query = (f'SELECT * FROM clientes WHERE c_nomclien = "{nome}" ORDER BY "Name"')
+            query = (f'SELECT * FROM clientes WHERE c_nomclien REGEXP "{nome}" LIMIT 10')
 
 
         self.cursor.execute(query)
