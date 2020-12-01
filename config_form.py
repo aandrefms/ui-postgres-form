@@ -28,7 +28,10 @@ class ConfigForm():
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
 
-        query = (f'SELECT * FROM clientes WHERE c_nomclien = "{nome}" ORDER BY "Name"')
+        if situacao != False:
+            query = (f'SELECT * FROM clientes WHERE c_sitclien = "{situacao}" ORDER BY "Name"')
+        else:
+            query = (f'SELECT * FROM clientes WHERE c_nomclien = "{nome}" ORDER BY "Name"')
 
 
         self.cursor.execute(query)
@@ -37,6 +40,8 @@ class ConfigForm():
         for row in self.cursor:
             lista_controle.append(row[1])
             lista_controle.append(row[2])
+            lista_controle.append(row[3])
+            lista_controle.append(row[4])
             lista.append(lista_controle)
             lista_controle = []
         self.cursor.close()
