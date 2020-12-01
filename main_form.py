@@ -504,7 +504,7 @@ class Ui_FormProcurar(object):
         self.text_browser.setStyleSheet("border-radius:6 px;\n"
                                         "background-color: #e4eaeb;\n"
                                         "padding: 4px;\n"
-                                        "")
+                                        "font-size: 12pt")
         self.text_browser.setObjectName("text_browser")
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(236, 30, 172, 51))
@@ -579,7 +579,7 @@ class Ui_FormProcurar(object):
                                            time=self.time_input.text(), situacao=self.situacao_input.text(),
                                            config=config_variable)
         for item in results:
-            self.text_browser.append(str(item))
+            self.text_browser.append(f'{item[1]}')
 
     def goBack(self):
         global procurar_pag

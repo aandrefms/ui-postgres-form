@@ -32,9 +32,13 @@ class ConfigForm():
 
 
         self.cursor.execute(query)
+        lista_controle = []
         lista = []
         for row in self.cursor:
-            lista.append(row)
+            lista_controle.append(row[1])
+            lista_controle.append(row[2])
+            lista.append(lista_controle)
+            lista_controle = []
         self.cursor.close()
         self.cnx.close()
         return lista
