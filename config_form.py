@@ -23,7 +23,7 @@ class ConfigForm():
         return self.config
 
 
-    def get_results(self, nome=False, matri=False, time=False, situacao=False, config=False):
+    def get_results(self, nome=False, matri=False, time=False, situacao=False, sexo=False, cpf=False, config=False):
 
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
@@ -42,6 +42,8 @@ class ConfigForm():
             lista_controle.append(row[2])
             lista_controle.append(row[3])
             lista_controle.append(row[4])
+            lista_controle.append(row[5])
+            lista_controle.append(row[6])
             lista.append(lista_controle)
             lista_controle = []
         self.cursor.close()

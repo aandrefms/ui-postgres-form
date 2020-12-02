@@ -10,6 +10,7 @@ controle_pag = None
 procurar_pag = None
 inserir_pag = None
 results = None
+edit_pag = None
 
 
 class Window(QMainWindow):
@@ -211,22 +212,35 @@ class Ui_FormProcurar(object):
                                            "")
         self.matricula_input.setPlaceholderText("Matrícula")
 
-
-        self.time_input = QtWidgets.QLineEdit(Form)
-        self.time_input.setGeometry(QtCore.QRect(62, 300, 520, 65))
+        self.cpf_input = QtWidgets.QLineEdit(Form)
+        self.cpf_input.setGeometry(QtCore.QRect(62, 300, 520, 65))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(16)
-        self.time_input.setFont(font)
-        self.time_input.setStyleSheet("border-radius:6 px;\n"
-                                      "background-color: #e4eaeb;\n"
-                                      "padding: 4px;\n"
-                                      "\n"
-                                      "")
-        self.time_input.setPlaceholderText('Time')
+        self.cpf_input.setFont(font)
+        self.cpf_input.setStyleSheet("border-radius:6 px;\n"
+                                           "background-color: #e4eaeb;\n"
+                                           "padding: 4px;\n"
+                                           "\n"
+                                           "")
+        self.cpf_input.setPlaceholderText("CPF")
+
+        self.sexo_input = QtWidgets.QLineEdit(Form)
+        self.sexo_input.setGeometry(QtCore.QRect(62, 400, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.sexo_input.setFont(font)
+        self.sexo_input.setStyleSheet("border-radius:6 px;\n"
+                                     "background-color: #e4eaeb;\n"
+                                     "padding: 4px;\n"
+                                     "\n"
+                                     "")
+        self.sexo_input.setPlaceholderText("Sexo")
+
 
         self.situacao_input = QtWidgets.QLineEdit(Form)
-        self.situacao_input.setGeometry(QtCore.QRect(62, 400, 520, 65))
+        self.situacao_input.setGeometry(QtCore.QRect(62, 500, 520, 65))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(16)
@@ -239,10 +253,22 @@ class Ui_FormProcurar(object):
         self.situacao_input.setPlaceholderText('Situação')
 
 
+        self.time_input = QtWidgets.QLineEdit(Form)
+        self.time_input.setGeometry(QtCore.QRect(62, 600, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.time_input.setFont(font)
+        self.time_input.setStyleSheet("border-radius:6 px;\n"
+                                      "background-color: #e4eaeb;\n"
+                                      "padding: 4px;\n"
+                                      "\n"
+                                      "")
+        self.time_input.setPlaceholderText('Time')
 
 
         self.procurar_btn = QtWidgets.QPushButton("Procurar", Form)
-        self.procurar_btn.setGeometry(QtCore.QRect(410, 490, 171, 51))
+        self.procurar_btn.setGeometry(QtCore.QRect(410, 690, 171, 51))
         font = QtGui.QFont()
         font.setFamily("Georgia")
         font.setPointSize(14)
@@ -254,18 +280,6 @@ class Ui_FormProcurar(object):
 
 
 
-        self.text_browser = QtWidgets.QTextBrowser(Form)
-        self.text_browser.setGeometry(QtCore.QRect(70, 575, 511, 171))
-        font = QtGui.QFont()
-        font.setFamily("Georgia")
-        font.setPointSize(15)
-        self.text_browser.setFont(font)
-        self.text_browser.setStyleSheet("border-radius:6 px;\n"
-                                        "background-color: #e4eaeb;\n"
-                                        "padding: 4px;\n"
-                                        "font-size: 12pt")
-        self.text_browser.setObjectName("text_browser")
-
         self.procurar_btn.clicked.connect(self.procurar)
         self.back_btn.clicked.connect(self.goBack)
 
@@ -274,6 +288,7 @@ class Ui_FormProcurar(object):
         global results
         results = ConfigForm().get_results(nome=self.nome_input.text(), matri=self.matricula_input.text(),
                                            time=self.time_input.text(), situacao=self.situacao_input.text(),
+                                           cpf=self.cpf_input.text(),sexo=self.sexo_input.text(),
                                            config=config_variable)
         self.Form = QtWidgets.QWidget()
         self.ui = Ui_MostrarResultados()
@@ -281,9 +296,6 @@ class Ui_FormProcurar(object):
         segunda_pag = self.Form
         self.Form.show()
 
-        self.text_browser.clear()
-        for item in results:
-            self.text_browser.append(f'{item[1]}')
 
     def goBack(self):
         global procurar_pag
@@ -316,6 +328,7 @@ class Ui_MostrarResultados(object):
 
     def createLayout(self):
         global results
+        global edit_pag
         self.groupBox = QtWidgets.QGroupBox('Resultados')
         gridLayout = QtWidgets.QGridLayout()
 
@@ -324,48 +337,80 @@ class Ui_MostrarResultados(object):
         font.setPointSize(16)
         label1 = QtWidgets.QLabel('Matrícula', self.Form)
         label1.setFont(font)
-        gridLayout.addWidget(label1, 0, 0)
+        gridLayout.addWidget(label1, 0, 1)
 
         label2 = QtWidgets.QLabel('Nome', self.Form)
         label2.setFont(font)
-        gridLayout.addWidget(label2, 0, 1)
+        gridLayout.addWidget(label2, 0, 2)
 
         label3 = QtWidgets.QLabel('CPF', self.Form)
         label3.setFont(font)
-        gridLayout.addWidget(label3, 0, 2)
+        gridLayout.addWidget(label3, 0, 3)
 
-        label4 = QtWidgets.QLabel('Endereço', self.Form)
+        label4 = QtWidgets.QLabel('Sexo', self.Form)
         label4.setFont(font)
-        gridLayout.addWidget(label4, 0, 3)
+        gridLayout.addWidget(label4, 0, 4)
+
+        label5 = QtWidgets.QLabel('Endereço', self.Form)
+        label5.setFont(font)
+        gridLayout.addWidget(label5, 0, 5)
+
+        label6 = QtWidgets.QLabel('Situação', self.Form)
+        label6.setFont(font)
+        gridLayout.addWidget(label6, 0, 6)
 
         i_control = 1
-
+        lista_control = []
         for i in results:
             print(i)
             if i[3] == bytearray(b'Masculino'):
-                sexo = 'Masculino'
+                i[3] = 'Masculino'
             else:
-                sexo = 'Feminino'
-            label1 = QtWidgets.QLabel(i[0], self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 0)
+                i[3] = 'Feminino'
+            btn1= QtWidgets.QPushButton(self.Form)
+            btn1.setIcon(QtGui.QIcon("./imgs/draw.png"))
+            btn1.setIconSize(QtCore.QSize(8,8))
+            btn1.setMinimumHeight(8)
+            btn1.setMaximumWidth(15)
+            gridLayout.addWidget(btn1, i_control, 0)
+            btn1.clicked.connect(lambda throw_away=0, i=i: self.edit_page(i))
 
-            label1 = QtWidgets.QLabel(i[1], self.Form)
+            label1 = QtWidgets.QLabel(i[0], self.Form)
             label1.setFont(font)
             gridLayout.addWidget(label1, i_control, 1)
 
-            label1 = QtWidgets.QLabel(i[2], self.Form)
+            label1 = QtWidgets.QLabel(i[1], self.Form)
             label1.setFont(font)
             gridLayout.addWidget(label1, i_control, 2)
 
-            label1 = QtWidgets.QLabel(sexo, self.Form)
+            label1 = QtWidgets.QLabel(i[2], self.Form)
             label1.setFont(font)
             gridLayout.addWidget(label1, i_control, 3)
+
+            label1 = QtWidgets.QLabel(i[3], self.Form)
+            label1.setFont(font)
+            gridLayout.addWidget(label1, i_control, 4)
+
+            label1 = QtWidgets.QLabel(i[4], self.Form)
+            label1.setFont(font)
+            gridLayout.addWidget(label1, i_control, 5)
+
+            label1 = QtWidgets.QLabel(i[5], self.Form)
+            label1.setFont(font)
+            gridLayout.addWidget(label1, i_control, 6)
 
             i_control +=1
 
         self.groupBox.setLayout(gridLayout)
 
+    def edit_page(self, some):
+        global edit_pag
+        edit_pag = some
+        self.Form = QtWidgets.QWidget()
+        self.ui = Ui_EditPage()
+        self.ui.setupUi(self.Form)
+        segunda_pag = self.Form
+        self.Form.show()
 
 class Ui_Cadastro(object):
     def setupUi(self, Cadastro):
@@ -524,6 +569,115 @@ class Ui_Cadastro(object):
                                        c_sexclien=self.sexo_comboBox.currentText(),
                                        c_sitclien=self.situacao_comboBox.currentText(),
                                        config=config_variable)
+
+
+class Ui_EditPage(object):
+    def setupUi(self, Form):
+        global edit_pag
+        Form.setObjectName("Form")
+        Form.setWindowModality(QtCore.Qt.NonModal)
+        Form.setStyleSheet("background-color:#ffffff")
+        Form.setWindowTitle('Formulário')
+        Form.resize(644, 800)
+        Form.setMinimumSize(QtCore.QSize(644, 800))
+        Form.setMaximumSize(QtCore.QSize(644, 800))
+
+        self.label = QtWidgets.QLabel("Formulário", Form)
+        self.label.setGeometry(QtCore.QRect(236, 30, 172, 51))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(20)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+
+        self.nome_input = QtWidgets.QLineEdit(Form)
+        self.nome_input.setGeometry(QtCore.QRect(62, 100, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.nome_input.setFont(font)
+        self.nome_input.setStyleSheet("border-radius:6 px;\n"
+                                      "background-color: #e4eaeb;\n"
+                                      "padding: 4px;\n"
+                                      "\n"
+                                      "")
+        self.nome_input.setText(edit_pag[1])
+
+        self.matricula_input = QtWidgets.QLineEdit(Form)
+        self.matricula_input.setGeometry(QtCore.QRect(62, 200, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.matricula_input.setFont(font)
+        self.matricula_input.setStyleSheet("border-radius:6 px;\n"
+                                           "background-color: #e4eaeb;\n"
+                                           "padding: 4px;\n"
+                                           "\n"
+                                           "")
+        self.matricula_input.setText(edit_pag[0])
+
+        self.cpf_input = QtWidgets.QLineEdit(Form)
+        self.cpf_input.setGeometry(QtCore.QRect(62, 300, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.cpf_input.setFont(font)
+        self.cpf_input.setStyleSheet("border-radius:6 px;\n"
+                                     "background-color: #e4eaeb;\n"
+                                     "padding: 4px;\n"
+                                     "\n"
+                                     "")
+        self.cpf_input.setText(edit_pag[2])
+
+        self.sexo_input = QtWidgets.QLineEdit(Form)
+        self.sexo_input.setGeometry(QtCore.QRect(62, 400, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.sexo_input.setFont(font)
+        self.sexo_input.setStyleSheet("border-radius:6 px;\n"
+                                      "background-color: #e4eaeb;\n"
+                                      "padding: 4px;\n"
+                                      "\n"
+                                      "")
+        self.sexo_input.setText(edit_pag[3])
+
+        self.situacao_input = QtWidgets.QLineEdit(Form)
+        self.situacao_input.setGeometry(QtCore.QRect(62, 500, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.situacao_input.setFont(font)
+        self.situacao_input.setStyleSheet("border-radius:6 px;\n"
+                                          "background-color: #e4eaeb;\n"
+                                          "padding: 4px;\n"
+                                          "\n"
+                                          "")
+        self.situacao_input.setText(edit_pag[5])
+
+        self.time_input = QtWidgets.QLineEdit(Form)
+        self.time_input.setGeometry(QtCore.QRect(62, 600, 520, 65))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(16)
+        self.time_input.setFont(font)
+        self.time_input.setStyleSheet("border-radius:6 px;\n"
+                                      "background-color: #e4eaeb;\n"
+                                      "padding: 4px;\n"
+                                      "\n"
+                                      "")
+        self.time_input.setPlaceholderText('Time')
+
+        self.editar_btn = QtWidgets.QPushButton("Editar", Form)
+        self.editar_btn.setGeometry(QtCore.QRect(410, 690, 171, 51))
+        font = QtGui.QFont()
+        font.setFamily("Georgia")
+        font.setPointSize(14)
+        self.editar_btn.setFont(font)
+        self.editar_btn.setStyleSheet("background-color:#0cddf5;\n"
+                                        "border-width: 2px;\n"
+                                        "border-radius: 15px;\n"
+                                        "padding: 4px;;")
 
 if __name__ == "__main__":
     App = QApplication(sys.argv)
