@@ -362,7 +362,6 @@ class Ui_MostrarResultados(object):
         i_control = 1
         lista_control = []
         for i in results:
-            print(i)
             if i[3] == bytearray(b'Masculino'):
                 i[3] = 'Masculino'
             else:
@@ -678,6 +677,18 @@ class Ui_EditPage(object):
                                         "border-width: 2px;\n"
                                         "border-radius: 15px;\n"
                                         "padding: 4px;;")
+
+        self.editar_btn.clicked.connect(self.goEditar)
+
+    def goEditar(self):
+        global config_variable
+
+        unique = edit_pag[6]
+        print(unique)
+        editado = ConfigForm().editar(c_nomclien=self.nome_input.text(), c_matclien=self.matricula_input.text(),
+                                           c_timclien=self.time_input.text(), c_sitclien=self.situacao_input.text(),
+                                           c_cpfclien=self.cpf_input.text(), c_sexclien=self.sexo_input.text(),
+                                           config=config_variable, unique=unique)
 
 if __name__ == "__main__":
     App = QApplication(sys.argv)

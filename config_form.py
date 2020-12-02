@@ -44,6 +44,7 @@ class ConfigForm():
             lista_controle.append(row[4])
             lista_controle.append(row[5])
             lista_controle.append(row[6])
+            lista_controle.append(row[0])
             lista.append(lista_controle)
             lista_controle = []
         self.cursor.close()
@@ -62,4 +63,13 @@ class ConfigForm():
         self.cursor.execute(query)
         self.cnx.commit()
 
+    def editar(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, unique
+                ,c_sitclien='', config=False):
 
+        self.cnx = mysql.connector.connect(**config)
+        self.cursor = self.cnx.cursor()
+
+        query = f"UPDATE clientes SET c_matclien = '{c_matclien}' WHERE idtable1 = '{unique}'"
+
+        self.cursor.execute(query)
+        self.cnx.commit()
