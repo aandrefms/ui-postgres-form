@@ -1,7 +1,7 @@
 import datetime
 import mysql.connector
 import tkinter as tk
-
+from pypika import Query
 
 
 class ConfigForm():
@@ -28,10 +28,21 @@ class ConfigForm():
         self.cnx = mysql.connector.connect(**config)
         self.cursor = self.cnx.cursor()
 
-        if situacao != "":
-            query = (f'SELECT * FROM clientes WHERE c_sitclien = "{situacao}" ORDER BY "Name"')
-        else:
-            query = (f'SELECT * FROM clientes WHERE c_nomclien REGEXP "{nome}" LIMIT 10')
+        query = f'SELECT * FROM clientes'
+        if situacao != '':
+            query = query + f' WHERE c_sitclien = "{situacao}"'
+        if sexo != '':
+            if 'WHERE' in query:
+                query = query + f' and c_sexclien = "{sexo}"'
+            else:
+                query = query + f' WHERE c_sexclien = "{sexo}"'
+        if nome != '':
+            if 'WHERE' in query:
+                query = query + f' and c_nomclien REGEXP "{nome}"'
+            else:
+                query = query + f' WHERE c_nomclien REGEXP "{nome}"'
+
+
 
 
         self.cursor.execute(query)
@@ -50,6 +61,7 @@ class ConfigForm():
         self.cursor.close()
         self.cnx.close()
         return lista
+
 
 
     def inserir(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, c_endclien=''
@@ -73,3 +85,4 @@ class ConfigForm():
 
         self.cursor.execute(query)
         self.cnx.commit()
+
