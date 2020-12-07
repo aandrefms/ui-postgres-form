@@ -374,7 +374,7 @@ class Ui_MostrarResultados(object):
             gridLayout.addWidget(btn1, i_control, 0)
             btn1.clicked.connect(lambda throw_away=0, i=i: self.edit_page(i))
 
-            label1 = QtWidgets.QLabel(i[0], self.Form)
+            label1 = QtWidgets.QLabel(str(i[0]), self.Form)
             label1.setFont(font)
             gridLayout.addWidget(label1, i_control, 1)
 
@@ -397,6 +397,7 @@ class Ui_MostrarResultados(object):
             label1 = QtWidgets.QLabel(i[5], self.Form)
             label1.setFont(font)
             gridLayout.addWidget(label1, i_control, 6)
+
 
             i_control +=1
 
