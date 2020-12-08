@@ -2,7 +2,7 @@ import datetime
 import mysql.connector
 import pyodbc
 import sqlalchemy as sal
-from sqlalchemy import MetaData, Table, Column, Integer, String, Sequence, create_engine, select, and_
+from sqlalchemy import MetaData, Table, Column, Integer, String, Sequence, create_engine, select, and_, insert, func
 from psycopg2 import *
 import datetime
 import mysql.connector
@@ -41,25 +41,23 @@ class ConfigForm():
 
     def get_results(self, nome=False, matri=False, time=False, situacao=False, sexo=False, cpf=False, config=False):
         self.config = config
+        
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
         metadata = MetaData(bind=None)
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
-
-
         stmt = select([table])
-        stmt = stmt.limit(5)
-        connection = engine.connect()
-        query = connection.execute(stmt).fetchall()
-        connection.close()
+
 
         if situacao != '':
             stmt = stmt.where(table.c.situacao == situacao)
+        if cpf != '':
+            stmt = stmt.where(table.c.cpf == cpf)
         if sexo != '':
             stmt = stmt.where(table.c.gender == sexo)
         if nome != '':
             stmt = stmt.where(table.c.first_name.contains(nome))
 
-        stmt = stmt.limit(5)
+        stmt = stmt.limit(15).order_by(table.c.id.asc())
         connection = engine.connect()
         query = connection.execute(stmt).fetchall()
         connection.close()
@@ -81,24 +79,42 @@ class ConfigForm():
 
 
 
-    def inserir(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, c_endclien=''
+    def inserir(self,c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, c_endclien=''
                 ,c_sitclien='', config=False):
-        self.cnx = mysql.connector.connect(**config)
-        self.cursor = self.cnx.cursor()
-        query = (f'INSERT INTO clientes (c_matclien, c_nomclien, c_cpfclien,c_sexclien, c_endclien, c_sitclien, c_timclien) VALUES'
-                 f'("{c_matclien}", "{c_nomclien}", "{c_cpfclien}", "{c_sexclien}", "{c_endclien}", "{c_sitclien}", '
-                 f'"{c_timclien}")')
+        self.config = config
+        
+        engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
+        metadata = MetaData(bind=None)
+        table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
+        connection = engine.connect()
 
-        self.cursor.execute(query)
-        self.cnx.commit()
+        stmt = select([func.max(table.c.id)])
+        seq = connection.execute(stmt)
+        seq = seq.fetchall()[0][0]
+
+        stmt = insert(table).values(id=seq+1,first_name=c_nomclien, last_name='Silva',
+                                    gender='Male', cpf=c_cpfclien,
+                                    situacao='false', address='Some value')
+
+        connection = engine.connect()
+        connection.execute(stmt)
+        connection.close()
+
+
 
     def editar(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, unique
                 ,c_sitclien='', config=False):
+        
+        self.config = config
+        engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
+        metadata = MetaData(bind=None)
+        table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
+    
+        stmt = table.update().where(table.c.id == unique).values(first_name = c_nomclien, cpf=c_cpfclien,
+                                                                 gender=c_sexclien, situacao=c_sitclien)
 
-        self.cnx = mysql.connector.connect(**config)
-        self.cursor = self.cnx.cursor()
+        connection = engine.connect()
+        connection.execute(stmt)
+        connection.close()
 
-        query = f"UPDATE clientes SET c_matclien = '{c_matclien}' WHERE idtable1 = '{unique}'"
 
-        self.cursor.execute(query)
-        self.cnx.commit()

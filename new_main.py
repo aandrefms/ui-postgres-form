@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from config_form import ConfigForm
+from config_test import ConfigForm
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5 import QtGui
@@ -362,10 +362,10 @@ class Ui_MostrarResultados(object):
         i_control = 1
         lista_control = []
         for i in results:
-            if i[3] == bytearray(b'Masculino'):
+            """if i[3] == bytearray(b'Masculino'):
                 i[3] = 'Masculino'
             else:
-                i[3] = 'Feminino'
+                i[3] = 'Feminino'"""
             btn1= QtWidgets.QPushButton(self.Form)
             btn1.setIcon(QtGui.QIcon("./imgs/draw.png"))
             btn1.setIconSize(QtCore.QSize(8,8))
@@ -401,6 +401,20 @@ class Ui_MostrarResultados(object):
 
             i_control +=1
 
+        btn_next = QtWidgets.QPushButton(self.Form)
+        btn_next.setIcon(QtGui.QIcon("./imgs/back.png"))
+        btn_next.setIconSize(QtCore.QSize(50, 50))
+        btn_next.setMinimumHeight(8)
+        btn_next.setMaximumWidth(30)
+        gridLayout.addWidget(btn_next, i_control, 5, alignment=QtCore.Qt.AlignRight)
+        
+        btn_next = QtWidgets.QPushButton(self.Form)
+        btn_next.setIcon(QtGui.QIcon("./imgs/next.png"))
+        btn_next.setIconSize(QtCore.QSize(50, 50))
+        btn_next.setMinimumHeight(8)
+        btn_next.setMaximumWidth(30)
+        gridLayout.addWidget(btn_next, i_control, 6, alignment=QtCore.Qt.AlignLeft)
+        
         self.groupBox.setLayout(gridLayout)
 
     def edit_page(self, some):
@@ -614,7 +628,7 @@ class Ui_EditPage(object):
                                            "padding: 4px;\n"
                                            "\n"
                                            "")
-        self.matricula_input.setText(edit_pag[0])
+        self.matricula_input.setText(str(edit_pag[0]))
 
         self.cpf_input = QtWidgets.QLineEdit(Form)
         self.cpf_input.setGeometry(QtCore.QRect(62, 300, 520, 65))
@@ -683,9 +697,8 @@ class Ui_EditPage(object):
 
     def goEditar(self):
         global config_variable
-
-        unique = edit_pag[6]
-        print(unique)
+        global edit_pag
+        unique = edit_pag[0]
         editado = ConfigForm().editar(c_nomclien=self.nome_input.text(), c_matclien=self.matricula_input.text(),
                                            c_timclien=self.time_input.text(), c_sitclien=self.situacao_input.text(),
                                            c_cpfclien=self.cpf_input.text(), c_sexclien=self.sexo_input.text(),
