@@ -9,8 +9,11 @@ config_variable = None
 controle_pag = None
 procurar_pag = None
 inserir_pag = None
+segunda_pag = None
+dados = None
 results = None
 edit_pag = None
+num_control = 0
 
 
 class Window(QMainWindow):
@@ -283,19 +286,51 @@ class Ui_FormProcurar(object):
         self.procurar_btn.clicked.connect(self.procurar)
         self.back_btn.clicked.connect(self.goBack)
 
-    def procurar(self):
+    def procurar(self, control=0):
         global config_variable
         global results
+        global dados
+        global num_control
+        num_control = None
+        dados = [self.nome_input.text(), self.matricula_input.text(), self.time_input.text(),
+                      self.situacao_input.text(), self.cpf_input.text(), self.sexo_input.text()]
+
         results = ConfigForm().get_results(nome=self.nome_input.text(), matri=self.matricula_input.text(),
                                            time=self.time_input.text(), situacao=self.situacao_input.text(),
                                            cpf=self.cpf_input.text(),sexo=self.sexo_input.text(),
-                                           config=config_variable)
+                                           config=config_variable, control_offset=control)
+        
+        self.show_results_page()
+
+    
+    def show_results_page(self, move=None):
+        global results
+        global num_control
+        global segunda_pag
+        global config_variable
+        try:
+            if move == 'n':
+                num_control += 1
+            if move == "b":
+                num_control -= 1
+                if num_control < 0:
+                    num_control = 0
+        except:
+            num_control = 1
+        
+        if num_control != None:
+            results = ConfigForm().get_results(nome=dados[0], matri=dados[1],
+                                           time=dados[2], situacao=dados[3],
+                                           cpf=dados[4], sexo=dados[5],
+                                           config=config_variable, control_offset=num_control)
+        
         self.Form = QtWidgets.QWidget()
         self.ui = Ui_MostrarResultados()
         self.ui.setupUi(self.Form)
         segunda_pag = self.Form
         self.Form.show()
 
+        
 
     def goBack(self):
         global procurar_pag
@@ -329,94 +364,116 @@ class Ui_MostrarResultados(object):
     def createLayout(self):
         global results
         global edit_pag
-        self.groupBox = QtWidgets.QGroupBox('Resultados')
-        gridLayout = QtWidgets.QGridLayout()
+        global num_control
+        global segunda_pag
+        
+        self.control_page()
+        
+        # NEXT AND BACK BUTTONS
+        def control_btn(move):
+            segunda_pag.close()
+            Ui_FormProcurar().show_results_page(move=move)
+            
 
-        font = QtGui.QFont()
-        font.setFamily("Georgia")
-        font.setPointSize(16)
-        label1 = QtWidgets.QLabel('Matrícula', self.Form)
-        label1.setFont(font)
-        gridLayout.addWidget(label1, 0, 1)
-
-        label2 = QtWidgets.QLabel('Nome', self.Form)
-        label2.setFont(font)
-        gridLayout.addWidget(label2, 0, 2)
-
-        label3 = QtWidgets.QLabel('CPF', self.Form)
-        label3.setFont(font)
-        gridLayout.addWidget(label3, 0, 3)
-
-        label4 = QtWidgets.QLabel('Sexo', self.Form)
-        label4.setFont(font)
-        gridLayout.addWidget(label4, 0, 4)
-
-        label5 = QtWidgets.QLabel('Endereço', self.Form)
-        label5.setFont(font)
-        gridLayout.addWidget(label5, 0, 5)
-
-        label6 = QtWidgets.QLabel('Situação', self.Form)
-        label6.setFont(font)
-        gridLayout.addWidget(label6, 0, 6)
-
-        i_control = 1
-        lista_control = []
-        for i in results:
-            """if i[3] == bytearray(b'Masculino'):
-                i[3] = 'Masculino'
-            else:
-                i[3] = 'Feminino'"""
-            btn1= QtWidgets.QPushButton(self.Form)
-            btn1.setIcon(QtGui.QIcon("./imgs/draw.png"))
-            btn1.setIconSize(QtCore.QSize(8,8))
-            btn1.setMinimumHeight(8)
-            btn1.setMaximumWidth(15)
-            gridLayout.addWidget(btn1, i_control, 0)
-            btn1.clicked.connect(lambda throw_away=0, i=i: self.edit_page(i))
-
-            label1 = QtWidgets.QLabel(str(i[0]), self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 1)
-
-            label1 = QtWidgets.QLabel(i[1], self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 2)
-
-            label1 = QtWidgets.QLabel(i[2], self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 3)
-
-            label1 = QtWidgets.QLabel(i[3], self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 4)
-
-            label1 = QtWidgets.QLabel(i[4], self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 5)
-
-            label1 = QtWidgets.QLabel(i[5], self.Form)
-            label1.setFont(font)
-            gridLayout.addWidget(label1, i_control, 6)
-
-
-            i_control +=1
-
-        btn_next = QtWidgets.QPushButton(self.Form)
-        btn_next.setIcon(QtGui.QIcon("./imgs/back.png"))
-        btn_next.setIconSize(QtCore.QSize(50, 50))
-        btn_next.setMinimumHeight(8)
-        btn_next.setMaximumWidth(30)
-        gridLayout.addWidget(btn_next, i_control, 5, alignment=QtCore.Qt.AlignRight)
+        btn_back = QtWidgets.QPushButton(self.Form)
+        btn_back.setIcon(QtGui.QIcon("./imgs/back.png"))
+        btn_back.setIconSize(QtCore.QSize(50, 50))
+        btn_back.setMinimumHeight(8)
+        btn_back.setMaximumWidth(30)
+        self.gridLayout.addWidget(btn_back, self.i_control, 5, alignment=QtCore.Qt.AlignRight)
+        btn_back.clicked.connect(lambda: control_btn('b'))
         
         btn_next = QtWidgets.QPushButton(self.Form)
         btn_next.setIcon(QtGui.QIcon("./imgs/next.png"))
         btn_next.setIconSize(QtCore.QSize(50, 50))
         btn_next.setMinimumHeight(8)
         btn_next.setMaximumWidth(30)
-        gridLayout.addWidget(btn_next, i_control, 6, alignment=QtCore.Qt.AlignLeft)
+        self.gridLayout.addWidget(btn_next, self.i_control, 6, alignment=QtCore.Qt.AlignLeft)
+        btn_next.clicked.connect(lambda: control_btn('n'))
         
-        self.groupBox.setLayout(gridLayout)
+        self.groupBox.setLayout(self.gridLayout)
+    
+    def control_page(self, move=None):
+        global edit_pag
+        global num_control
+        global results
+        
+        self.groupBox = QtWidgets.QGroupBox('Resultados')
+        self.gridLayout = QtWidgets.QGridLayout()
+        
+        self.font = QtGui.QFont()
+        self.font.setFamily("Georgia")
+        self.font.setPointSize(16)
+        label1 = QtWidgets.QLabel('Matrícula', self.Form)
+        label1.setFont(self.font)
+        self.gridLayout.addWidget(label1, 0, 1)
 
+        label2 = QtWidgets.QLabel('Nome', self.Form)
+        label2.setFont(self.font)
+        self.gridLayout.addWidget(label2, 0, 2)
+
+        label3 = QtWidgets.QLabel('CPF', self.Form)
+        label3.setFont(self.font)
+        self.gridLayout.addWidget(label3, 0, 3)
+
+        label4 = QtWidgets.QLabel('Sexo', self.Form)
+        label4.setFont(self.font)
+        self.gridLayout.addWidget(label4, 0, 4)
+
+        label5 = QtWidgets.QLabel('Endereço', self.Form)
+        label5.setFont(self.font)
+        self.gridLayout.addWidget(label5, 0, 5)
+
+        label6 = QtWidgets.QLabel('Situação', self.Form)
+        label6.setFont(self.font)
+        self.gridLayout.addWidget(label6, 0, 6)
+        self.i_control = 1
+        
+        
+        
+        lista_control = []
+        for i in results:
+            """if i[3] == bytearray(b'Masculino'):
+                i[3] = 'Masculino'
+            else:
+                i[3] = 'Feminino'"""
+            btn1 = QtWidgets.QPushButton(self.Form)
+            btn1.setIcon(QtGui.QIcon("./imgs/draw.png"))
+            btn1.setIconSize(QtCore.QSize(8, 8))
+            btn1.setMinimumHeight(8)
+            btn1.setMaximumWidth(15)
+            self.gridLayout.addWidget(btn1, self.i_control, 0)
+            btn1.clicked.connect(lambda throw_away=0, i=i: self.edit_page(i))
+        
+            label1 = QtWidgets.QLabel(str(i[0]), self.Form)
+            label1.setFont(self.font)
+            self.gridLayout.addWidget(label1, self.i_control, 1)
+        
+            label1 = QtWidgets.QLabel(i[1], self.Form)
+            label1.setFont(self.font)
+            self.gridLayout.addWidget(label1, self.i_control, 2)
+
+        
+            label1 = QtWidgets.QLabel(i[2], self.Form)
+            label1.setFont(self.font)
+            self.gridLayout.addWidget(label1, self.i_control, 3)
+        
+            label1 = QtWidgets.QLabel(i[3], self.Form)
+            label1.setFont(self.font)
+            self.gridLayout.addWidget(label1, self.i_control, 4)
+        
+            label1 = QtWidgets.QLabel(i[4], self.Form)
+            label1.setFont(self.font)
+            self.gridLayout.addWidget(label1, self.i_control, 5)
+        
+            label1 = QtWidgets.QLabel(i[5], self.Form)
+            label1.setFont(self.font)
+            self.gridLayout.addWidget(label1, self.i_control, 6)
+
+
+            self.i_control += 1
+        
+    
     def edit_page(self, some):
         global edit_pag
         edit_pag = some

@@ -21,7 +21,6 @@ stmt = stmt.where(table.c.price == 76181.75)
 connection = engine.connect()
 
 results = connection.execute(stmt).fetchall()
-print(results)
 connection.close()
 '''
 for i in result.fetchall():
@@ -39,7 +38,8 @@ class ConfigForm():
         return self.config
 
 
-    def get_results(self, nome=False, matri=False, time=False, situacao=False, sexo=False, cpf=False, config=False):
+    def get_results(self, nome='', matri='', time='', situacao='', sexo='', cpf='',
+                    config=False, control_offset=0):
         self.config = config
         
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
@@ -58,6 +58,7 @@ class ConfigForm():
             stmt = stmt.where(table.c.first_name.contains(nome))
 
         stmt = stmt.limit(15).order_by(table.c.id.asc())
+        stmt = stmt.offset(control_offset*15)
         connection = engine.connect()
         query = connection.execute(stmt).fetchall()
         connection.close()
@@ -74,7 +75,7 @@ class ConfigForm():
             lista_controle.append(row[0])
             lista.append(lista_controle)
             lista_controle = []
-        print(lista)
+
         return lista
 
 
