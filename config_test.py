@@ -38,8 +38,8 @@ class ConfigForm():
         return self.config
 
 
-    def get_results(self, nome='', matri='', time='', situacao='', sexo='', cpf='',
-                    config=False, control_offset=0):
+    def get_results(self, nome='', matri='', endereco='', situacao='', sexo='', cpf='',
+                    config=False, time='', control_offset=0):
         self.config = config
         
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
@@ -54,6 +54,8 @@ class ConfigForm():
             stmt = stmt.where(table.c.cpf == cpf)
         if sexo != '':
             stmt = stmt.where(table.c.gender == sexo)
+        if endereco != "":
+            stmt = stmt.where(table.c.address == endereco)
         if nome != '':
             stmt = stmt.where(table.c.first_name.contains(nome))
 
@@ -80,7 +82,7 @@ class ConfigForm():
 
 
 
-    def inserir(self,c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, c_endclien=''
+    def inserir(self,c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_endclien=''
                 ,c_sitclien='', config=False):
         self.config = config
         
@@ -93,9 +95,9 @@ class ConfigForm():
         seq = connection.execute(stmt)
         seq = seq.fetchall()[0][0]
 
-        stmt = insert(table).values(id=seq+1,first_name=c_nomclien, last_name='Silva',
-                                    gender='Male', cpf=c_cpfclien,
-                                    situacao='false', address='Some value')
+        stmt = insert(table).values(id=seq+1, first_name=c_nomclien, last_name='Silva',
+                                    gender=c_sexclien, cpf=c_cpfclien,
+                                    situacao=c_sitclien, address=c_endclien)
 
         connection = engine.connect()
         connection.execute(stmt)
@@ -103,7 +105,7 @@ class ConfigForm():
 
 
 
-    def editar(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_timclien, unique
+    def editar(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, endereco, unique
                 ,c_sitclien='', config=False):
         
         self.config = config
@@ -112,7 +114,8 @@ class ConfigForm():
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
     
         stmt = table.update().where(table.c.id == unique).values(first_name = c_nomclien, cpf=c_cpfclien,
-                                                                 gender=c_sexclien, situacao=c_sitclien)
+                                                                 gender=c_sexclien, situacao=c_sitclien,
+                                                                 address=endereco)
 
         connection = engine.connect()
         connection.execute(stmt)
