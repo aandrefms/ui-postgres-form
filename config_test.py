@@ -117,5 +117,16 @@ class ConfigForm():
         connection = engine.connect()
         connection.execute(stmt)
         connection.close()
-
+        
+    def delete(self, item, config):
+        self.config = config
+        engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
+        metadata = MetaData(bind=None)
+        table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
+        
+        delete = table.delete().where(table.c.cpf == item)
+        connection = engine.connect()
+        connection.execute(delete)
+        connection.close()
+        
 
