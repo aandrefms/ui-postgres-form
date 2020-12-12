@@ -567,6 +567,8 @@ class Ui_MostrarResultados(object):
                 msg.setText('Item deletado!')
                 msg.setWindowTitle("Aviso")
                 msg.exec_()
+                segunda_pag.close()
+                Ui_FormProcurar().show_results_page(move="r")
             except:
                 pass
         else:
