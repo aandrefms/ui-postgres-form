@@ -5,6 +5,7 @@ from PyQt5 import QtCore
 from PyQt5 import QtGui
 import sys
 
+
 config_variable = None
 controle_pag = None
 procurar_pag = None
@@ -332,8 +333,8 @@ class Ui_FormProcurar(object):
         global config_variable
         global results
         global dados
-        global num_control
-        num_control = None
+        '''global num_control
+        num_control = None'''
         dados = [self.mat_input.text(), self.nome_input.text(), self.end_input.text(),
                  self.situacao_comboBox.currentText(), self.cpf_input.text(), self.sexo_comboBox.currentText()]
         
@@ -343,7 +344,7 @@ class Ui_FormProcurar(object):
                                            config=config_variable, control_offset=control)
         
         self.show_results_page()
-    
+        
     def show_results_page(self, move=None):
         global results
         global num_control
@@ -352,34 +353,41 @@ class Ui_FormProcurar(object):
         try:
             if move == 'n':
                 num_control += 1
-            if move == "b":
+            elif move == "b":
                 num_control -= 1
                 if num_control < 0:
                     num_control = 0
-            if move == "r":
+            '''elif move == "r":
                 if num_control == None:
                     num_control = 0
                 else:
-                    pass
-                
+                    pass'''
         except:
             if move == 'n':
                 num_control = 1
             if move == "b" or move == "r":
                 num_control = 0
-                
-        
-        if num_control != None:
-            results = ConfigForm().get_results(nome=dados[0], matri=dados[1],
+
+        '''num_control != None and'''
+        if move != 'csv':
+            results = ConfigForm().get_results(nome=dados[1], matri=dados[0],
                                                time=dados[2], situacao=dados[3],
                                                cpf=dados[4], sexo=dados[5],
                                                config=config_variable, control_offset=num_control)
+            
+        elif move == 'csv':
+            print(dados)
+            ConfigForm().create_csv(nome=dados[1],
+                                    endereco=dados[2], situacao=dados[3],
+                                    cpf=dados[4], sexo=dados[5],
+                                    config=config_variable)
         
-        self.Form = QtWidgets.QWidget()
-        self.ui = Ui_MostrarResultados()
-        self.ui.setupUi(self.Form)
-        segunda_pag = self.Form
-        self.Form.show()
+        if move != 'csv':
+            self.Form = QtWidgets.QWidget()
+            self.ui = Ui_MostrarResultados()
+            self.ui.setupUi(self.Form)
+            segunda_pag = self.Form
+            self.Form.show()
     
     def goBack(self):
         global procurar_pag
@@ -414,6 +422,7 @@ class Ui_MostrarResultados(object):
         
         self.group = QGroupBox()
         self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.addWidget(self.csv_btn, 0, 0)
         self.gridLayout.addWidget(self.back_btn, 0, 1)
         self.gridLayout.addWidget(self.next_btn, 0, 2)
         self.group.setLayout(self.gridLayout)
@@ -457,13 +466,15 @@ class Ui_MostrarResultados(object):
         header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(6, QtWidgets.QHeaderView.ResizeToContents)
-        self.controle_page()
+        self.controle_page_row()
         
         # NEXT AND BACK BUTTONS
         def control_btn(move):
-            segunda_pag.close()
+            if move != 'csv':
+                segunda_pag.close()
             Ui_FormProcurar().show_results_page(move=move)
         
+        #Creating
         self.back_btn = QtWidgets.QPushButton(self.Form)
         self.back_btn.setStyleSheet("background-color:#ffffff;\n"
                                     "border-width: 2px;\n"
@@ -481,7 +492,7 @@ class Ui_MostrarResultados(object):
         self.next_btn.setStyleSheet("background-color:#ffffff;\n"
                                     "border-width: 2px;\n"
                                     "border-radius: 15px;\n"
-                                    "padding: 4px;;")
+                                    "padding: 4px;")
         self.next_btn.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("./imgs/next.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -489,6 +500,14 @@ class Ui_MostrarResultados(object):
         self.next_btn.setIconSize(QtCore.QSize(40, 40))
         self.next_btn.setObjectName("next_btn")
         self.next_btn.clicked.connect(lambda: control_btn('n'))
+        
+        self.csv_btn = QtWidgets.QPushButton(self.Form)
+        self.csv_btn.setStyleSheet("background-color:#ffffff;\n"
+                                    "border-width: 2px;\n"
+                                    "border-radius: 15px;\n"
+                                    "padding: 4px;")
+        self.csv_btn.setText('Gerar CSV')
+        self.csv_btn.clicked.connect(lambda: control_btn('csv'))
         
         self.back_btn.setFixedWidth(70)
         self.next_btn.setFixedWidth(70)
@@ -508,7 +527,7 @@ class Ui_MostrarResultados(object):
         segunda_pag.close()
         Ui_FormProcurar().show_results_page(move=move)
     
-    def controle_page(self):
+    def controle_page_row(self):
         global results
         self.i_control = 0
         for i in results:
@@ -551,8 +570,10 @@ class Ui_MostrarResultados(object):
             self.tableWidget.setItem(self.i_control, 6, QTableWidgetItem(i[5]))
             
             self.i_control += 1
+            
     # DELETE FUNCTION
-    def delete_item(self, info):
+    @staticmethod
+    def delete_item(info):
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText("Voce tem certeza que deseja deletar este item?")
@@ -573,6 +594,7 @@ class Ui_MostrarResultados(object):
                 pass
         else:
             pass
+        
     
     def edit_page(self, some):
         global edit_pag

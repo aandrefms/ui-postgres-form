@@ -7,6 +7,8 @@ from psycopg2 import *
 import datetime
 import mysql.connector
 from pypika import Query
+import csv
+
 
 
 engine = create_engine('postgresql://andre:manchester00@localhost/test')
@@ -56,6 +58,8 @@ class ConfigForm():
             stmt = stmt.where(table.c.gender == sexo)
         if endereco != "":
             stmt = stmt.where(table.c.address == endereco)
+        if matri != '':
+            stmt = stmt.where(table.c.id == matri)
         if nome != '':
             stmt = stmt.where(table.c.first_name.contains(nome))
 
@@ -116,7 +120,8 @@ class ConfigForm():
         stmt = table.update().where(table.c.id == unique).values(first_name = c_nomclien, cpf=c_cpfclien,
                                                                  gender=c_sexclien, situacao=c_sitclien,
                                                                  address=endereco)
-
+        
+        
         connection = engine.connect()
         connection.execute(stmt)
         connection.close()
@@ -132,4 +137,30 @@ class ConfigForm():
         connection.execute(delete)
         connection.close()
         
+    def create_csv(self,nome='', situacao='', cpf='', sexo='', endereco='', config=False):
+        self.config = config
+        
+        engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
+        metadata = MetaData(bind=None)
+        table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
+        stmt = select([table])
 
+
+        '''if situacao != '':
+            stmt = stmt.where(table.c.situacao == situacao)
+        if cpf != '':
+            stmt = stmt.where(table.c.cpf == cpf)
+        if sexo != '':
+            stmt = stmt.where(table.c.gender == sexo)
+        if endereco != "":
+            stmt = stmt.where(table.c.address == endereco)'''
+        if nome != '':
+            stmt = stmt.where(table.c.first_name.contains(nome))
+
+        connection = engine.connect()
+        results = connection.execute(stmt)
+        
+        with open ('data.csv', 'w') as f:
+            outcsv = csv.writer(f)
+            outcsv.writerow(results.keys())
+            outcsv.writerows(results)
