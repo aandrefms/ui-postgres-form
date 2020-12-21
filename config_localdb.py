@@ -6,40 +6,37 @@ from sqlalchemy import MetaData, Table, Column, Integer, String, Sequence, creat
 from psycopg2 import *
 import datetime
 import mysql.connector
-from pypika import Query
 import csv
 
-
-
-engine = create_engine('postgresql://andre:manchester00@localhost/test')
+'''engine = create_engine(f'postgresql://andre:manchester00@35.198.41.232/postgres')
 metadata = MetaData(bind=None)
-table = Table('car', metadata, autoload=True, autoload_with=engine)
-
-#stmt = select([table.c.price, table.c.make]).where(and_(table.c.make == 'Honda', table.c.price == 76181.75))
-stmt = select([table.c.price, table.c.make])
-stmt = stmt.where(table.c.make == 'Honda')
-stmt = stmt.where(table.c.price == 76181.75)
-
+table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
+stmt = select([table])
+nome = 'Henka'
+if nome != '':
+    stmt = stmt.where(table.c.first_name.contains(nome))
 connection = engine.connect()
+query = connection.execute(stmt).fetchall()
+for i in query:
+    print(i)
+connection.close()'''
 
-results = connection.execute(stmt).fetchall()
-connection.close()
 '''
 for i in result.fetchall():
-        print(i[3])'''
+        print(i[3])
+'''
 
 
 class ConfigForm():
     def __init__(self):
         pass
-
+    
     def get_login(self, usuario, senha, nome=False):
         engine = create_engine(f'postgresql://{usuario}:{senha}@localhost/aabb')
         conn = engine.connect()
         self.config = [usuario, senha]
         return self.config
-
-
+    
     def get_results(self, nome='', matri='', endereco='', situacao='', sexo='', cpf='',
                     config=False, time='', control_offset=0):
         self.config = config
@@ -48,8 +45,7 @@ class ConfigForm():
         metadata = MetaData(bind=None)
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
         stmt = select([table])
-
-
+        
         if situacao != '':
             stmt = stmt.where(table.c.situacao == situacao)
         if cpf != '':
@@ -62,13 +58,13 @@ class ConfigForm():
             stmt = stmt.where(table.c.id == matri)
         if nome != '':
             stmt = stmt.where(table.c.first_name.contains(nome))
-
+        
         stmt = stmt.limit(15).order_by(table.c.id.asc())
-        stmt = stmt.offset(control_offset*15)
+        stmt = stmt.offset(control_offset * 15)
         connection = engine.connect()
         query = connection.execute(stmt).fetchall()
         connection.close()
-
+        
         lista_controle = []
         lista = []
         for row in query:
@@ -81,51 +77,46 @@ class ConfigForm():
             lista_controle.append(row[0])
             lista.append(lista_controle)
             lista_controle = []
-
+        
         return lista
-
-
-
-    def inserir(self,c_matclien,c_nomclien, c_cpfclien, c_sexclien, c_endclien=''
-                ,c_sitclien='', config=False):
+    
+    def inserir(self, c_matclien, c_nomclien, c_cpfclien, c_sexclien, c_endclien=''
+                , c_sitclien='', config=False):
         self.config = config
         
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
         metadata = MetaData(bind=None)
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
         connection = engine.connect()
-
+        
         stmt = select([func.max(table.c.id)])
         seq = connection.execute(stmt)
         seq = seq.fetchall()[0][0]
-
-        stmt = insert(table).values(id=seq+1, first_name=c_nomclien, last_name='Silva',
+        
+        stmt = insert(table).values(id=seq + 1, first_name=c_nomclien, last_name='Silva',
                                     gender=c_sexclien, cpf=c_cpfclien,
                                     situacao=c_sitclien, address=c_endclien)
-
+        
         connection = engine.connect()
         connection.execute(stmt)
         connection.close()
-
-
-
-    def editar(self, c_matclien,c_nomclien, c_cpfclien, c_sexclien, endereco, unique
-                ,c_sitclien='', config=False):
+    
+    def editar(self, c_matclien, c_nomclien, c_cpfclien, c_sexclien, endereco, unique
+               , c_sitclien='', config=False):
         
         self.config = config
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
         metadata = MetaData(bind=None)
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
-    
-        stmt = table.update().where(table.c.id == unique).values(first_name = c_nomclien, cpf=c_cpfclien,
+        
+        stmt = table.update().where(table.c.id == unique).values(first_name=c_nomclien, cpf=c_cpfclien,
                                                                  gender=c_sexclien, situacao=c_sitclien,
                                                                  address=endereco)
-        
         
         connection = engine.connect()
         connection.execute(stmt)
         connection.close()
-        
+    
     def delete(self, item, config):
         self.config = config
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
@@ -136,16 +127,15 @@ class ConfigForm():
         connection = engine.connect()
         connection.execute(delete)
         connection.close()
-        
-    def create_csv(self,nome='', situacao='', cpf='', sexo='', endereco='', config=False):
+    
+    def create_csv(self, nome='', situacao='', cpf='', sexo='', endereco='', config=False):
         self.config = config
         
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
         metadata = MetaData(bind=None)
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
         stmt = select([table])
-
-
+        
         '''if situacao != '':
             stmt = stmt.where(table.c.situacao == situacao)
         if cpf != '':
@@ -156,11 +146,11 @@ class ConfigForm():
             stmt = stmt.where(table.c.address == endereco)'''
         if nome != '':
             stmt = stmt.where(table.c.first_name.contains(nome))
-
+        
         connection = engine.connect()
         results = connection.execute(stmt)
         
-        with open ('data.csv', 'w') as f:
+        with open('data.csv', 'w') as f:
             outcsv = csv.writer(f)
             outcsv.writerow(results.keys())
             outcsv.writerows(results)

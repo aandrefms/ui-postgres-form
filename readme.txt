@@ -1,1 +1,3 @@
-Hello
+- Este projeto contém a UI de um formulário, com seu banco de dados em postgreSQL;
+- Para a UI, utilizei a biblioteca Pyqt5;
+- Para se conectar com o banco de dados, utilizei a biblioteca SQL Alchemy;

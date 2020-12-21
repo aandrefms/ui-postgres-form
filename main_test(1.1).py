@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from config_test import ConfigForm
+from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
+from config_localdb import ConfigForm
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5 import QtGui
@@ -16,6 +16,8 @@ results = None
 edit_pag = None
 editar_pag = None
 num_control = 0
+
+
 
 
 class Window(QMainWindow):
@@ -283,7 +285,6 @@ class Ui_FormProcurar(object):
                                          "background-color: #e4eaeb;\n"
                                          "padding: 8px;")
         self.sexo_comboBox.setObjectName("sexo_comboBox")
-        self.sexo_comboBox.setPlaceholderText("--Choose One--")
         self.sexo_comboBox.addItem("")
         self.sexo_comboBox.addItem("Male")
         self.sexo_comboBox.addItem("Female")
@@ -511,6 +512,22 @@ class Ui_MostrarResultados(object):
         
         self.back_btn.setFixedWidth(70)
         self.next_btn.setFixedWidth(70)
+    
+    # Impressão
+    def print_widget(self):
+        # Create printer
+        printer = QtPrintSupport.QPrinter()
+        # Create painter
+        painter = QtGui.QPainter()
+        # Start painter
+        painter.begin(printer)
+        # Grab a widget you want to print
+        screen = self.tableWidget.grab()
+        # Draw grabbed pixmap
+        painter.drawPixmap(10, 10, screen)
+        # End painting
+        painter.end()
+    
     
     # control width size
     def setTableWidth(self):
