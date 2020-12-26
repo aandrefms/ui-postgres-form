@@ -370,7 +370,7 @@ class Ui_FormProcurar(object):
                 num_control = 0
 
         '''num_control != None and'''
-        if move != 'csv':
+        if move != 'csv' and move != 'excel':
             results = ConfigForm().get_results(nome=dados[1], matri=dados[0],
                                                time=dados[2], situacao=dados[3],
                                                cpf=dados[4], sexo=dados[5],
@@ -378,10 +378,16 @@ class Ui_FormProcurar(object):
             
         elif move == 'csv':
             print(dados)
-            ConfigForm().create_csv(nome=dados[1],
+            ConfigForm().create_output(nome=dados[1],
                                     endereco=dados[2], situacao=dados[3],
                                     cpf=dados[4], sexo=dados[5],
-                                    config=config_variable)
+                                    config=config_variable, move=move)
+        elif move == 'excel':
+            print(dados)
+            ConfigForm().create_output(nome=dados[1],
+                                    endereco=dados[2], situacao=dados[3],
+                                    cpf=dados[4], sexo=dados[5],
+                                    config=config_variable, move=move)
         
         if move != 'csv':
             self.Form = QtWidgets.QWidget()
@@ -424,8 +430,9 @@ class Ui_MostrarResultados(object):
         self.group = QGroupBox()
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.addWidget(self.csv_btn, 0, 0)
-        self.gridLayout.addWidget(self.back_btn, 0, 1)
-        self.gridLayout.addWidget(self.next_btn, 0, 2)
+        self.gridLayout.addWidget(self.excel_btn, 0, 1)
+        self.gridLayout.addWidget(self.back_btn, 0, 2)
+        self.gridLayout.addWidget(self.next_btn, 0, 3)
         self.group.setLayout(self.gridLayout)
         
         self.layout.addWidget(self.group)
@@ -471,7 +478,7 @@ class Ui_MostrarResultados(object):
         
         # NEXT AND BACK BUTTONS
         def control_btn(move):
-            if move != 'csv':
+            if move != 'csv' and move != 'excel':
                 segunda_pag.close()
             Ui_FormProcurar().show_results_page(move=move)
         
@@ -509,6 +516,14 @@ class Ui_MostrarResultados(object):
                                     "padding: 4px;")
         self.csv_btn.setText('Gerar CSV')
         self.csv_btn.clicked.connect(lambda: control_btn('csv'))
+
+        self.excel_btn = QtWidgets.QPushButton(self.Form)
+        self.excel_btn.setStyleSheet("background-color:#ffffff;\n"
+                                   "border-width: 2px;\n"
+                                   "border-radius: 15px;\n"
+                                   "padding: 4px;")
+        self.excel_btn.setText('Gerar Excel')
+        self.excel_btn.clicked.connect(lambda: control_btn('excel'))
         
         self.back_btn.setFixedWidth(70)
         self.next_btn.setFixedWidth(70)

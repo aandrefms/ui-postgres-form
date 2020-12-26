@@ -1,11 +1,8 @@
-import datetime
-import mysql.connector
-import pyodbc
-import sqlalchemy as sal
 from sqlalchemy import MetaData, Table, Column, Integer, String, Sequence, create_engine, select, and_, insert, func
 from psycopg2 import *
-import datetime
-import mysql.connector
+
+import pandas as pd
+
 import csv
 
 '''engine = create_engine(f'postgresql://andre:manchester00@35.198.41.232/postgres')
@@ -128,29 +125,39 @@ class ConfigForm():
         connection.execute(delete)
         connection.close()
     
-    def create_csv(self, nome='', situacao='', cpf='', sexo='', endereco='', config=False):
+    def create_output(self, nome='', situacao='', cpf='', sexo='', endereco='', config=False, move=False):
         self.config = config
         
         engine = create_engine(f'postgresql://{self.config[0]}:{self.config[1]}@localhost/aabb')
         metadata = MetaData(bind=None)
         table = Table('clientes_aabb', metadata, autoload=True, autoload_with=engine)
         stmt = select([table])
-        
-        '''if situacao != '':
+
+        if situacao != '':
             stmt = stmt.where(table.c.situacao == situacao)
         if cpf != '':
             stmt = stmt.where(table.c.cpf == cpf)
         if sexo != '':
             stmt = stmt.where(table.c.gender == sexo)
         if endereco != "":
-            stmt = stmt.where(table.c.address == endereco)'''
+            stmt = stmt.where(table.c.address == endereco)
         if nome != '':
             stmt = stmt.where(table.c.first_name.contains(nome))
-        
+
         connection = engine.connect()
         results = connection.execute(stmt)
-        
-        with open('data.csv', 'w') as f:
-            outcsv = csv.writer(f)
-            outcsv.writerow(results.keys())
-            outcsv.writerows(results)
+
+        if move == 'csv':
+            with open('data.csv', 'w') as f:
+                outcsv = csv.writer(f)
+                outcsv.writerow(results.keys())
+                outcsv.writerows(results)
+
+        else:
+            columns = results.keys()
+            data = results
+            df = pd.DataFrame(list(data), columns=columns)
+    
+            writer = pd.ExcelWriter('foo.xlsx')
+            df.to_excel(writer, sheet_name='bar')
+            writer.save()
